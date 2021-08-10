@@ -1,3 +1,3 @@
 # Polynominterpolation
 
-A interactive Visualization made with Oxyplot to visualize the Polynominterpolation of Lagrange
+A interactive Visualization made with Oxyplot and Windows Forms to visualize the Polynominterpolation of Lagrange.
