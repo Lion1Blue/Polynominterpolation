@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using OxyPlot;
 using OxyPlot.Series;
@@ -31,31 +25,33 @@ namespace Visual
             plotModel = new PlotModel();
             plotModel.Series.Add(new LineSeries());
             plotModel.Series.Add(new LineSeries());
+            plotModel.Series.Add(new LineSeries());
 
             //Adding y - Coordinate Axes
             plotModel.Axes.Add(new OxyPlot.Axes.LinearAxis
-            { 
+            {
                 Position = OxyPlot.Axes.AxisPosition.Bottom,
                 ExtraGridlines = new double[] { 0 },
                 ExtraGridlineThickness = 1,
                 ExtraGridlineColor = OxyColors.Black,
                 MajorGridlineThickness = 1,
                 MinorGridlineStyle = LineStyle.Solid,
-                MajorGridlineStyle = OxyPlot.LineStyle.Solid }
+                MajorGridlineStyle = OxyPlot.LineStyle.Solid
+            }
             );
 
             //Adding x - Coordinate Axes
             plotModel.Axes.Add(new OxyPlot.Axes.LinearAxis
-            { 
-                Position = OxyPlot.Axes.AxisPosition.Left, 
-                ExtraGridlines = new double[] { 0 }, 
-                ExtraGridlineThickness = 1, 
-                ExtraGridlineColor = OxyColors.Black, 
-                MajorGridlineThickness = 1, 
-                MinorGridlineStyle = LineStyle.Solid, 
-                MajorGridlineStyle = OxyPlot.LineStyle.Solid }
+            {
+                Position = OxyPlot.Axes.AxisPosition.Left,
+                ExtraGridlines = new double[] { 0 },
+                ExtraGridlineThickness = 1,
+                ExtraGridlineColor = OxyColors.Black,
+                MajorGridlineThickness = 1,
+                MinorGridlineStyle = LineStyle.Solid,
+                MajorGridlineStyle = OxyPlot.LineStyle.Solid
+            }
             );
-
 
             plotView1.MouseUp += PlotView_MouseUp;
 
@@ -183,15 +179,25 @@ namespace Visual
             plotModel.InvalidatePlot(true);
         }
 
+        private double HMethod(Function function, double x, double h = 0.0000001)
+        {
+            return (function(x + h) - function(x)) / h;
+        }
+
         private void DrawFunction(PlotModel myModel, PointD[] points)
         {
             LineSeries splineLine = new LineSeries();
             splineLine.MarkerType = MarkerType.None;
             splineLine.Color = OxyColors.Blue;
 
+            LineSeries derivative = new LineSeries();
+            derivative.MarkerType = MarkerType.None;
+            derivative.Color = OxyColors.Orange;
+
             if (points.Length == 0)
             {
                 myModel.Series[0] = splineLine;
+                myModel.Series[2] = derivative;
                 return;
             }
 
@@ -199,15 +205,18 @@ namespace Visual
 
             double xmin = Convert.ToDouble(textBoxXMin.Text);
             double xmax = Convert.ToDouble(textBoxXMax.Text);
-
             double stepSize = 0.1;
 
             for (double x = xmin; x < xmax; x += stepSize)
             {
                 splineLine.Points.Add(new DataPoint(x, term.calc(x)));
+
+                if (checkBoxDerivative.Checked)
+                    derivative.Points.Add(new DataPoint(x, HMethod(term.calc, x)));
             }
 
             myModel.Series[0] = splineLine;
+            myModel.Series[2] = derivative;
         }
 
         private void DrawControlPoints(PlotModel myModel, LineSeries controlPoints, PointD[] points)
@@ -257,8 +266,8 @@ namespace Visual
 
             for (int i = 0; i < dataGridView.RowCount - 1; i++)
             {
-                double x = Convert.ToDouble(dataGridView[0, i].Value.ToString());
-                double y = Convert.ToDouble(dataGridView[1, i].Value.ToString());
+                double x = dataGridView[0, i].Value != null ? Convert.ToDouble(dataGridView[0, i].Value.ToString()) : 0d;
+                double y = dataGridView[1, i].Value != null ? Convert.ToDouble(dataGridView[1, i].Value.ToString()) : 0d;
 
                 table[i] = new PointD(x, y);
             }
@@ -333,6 +342,25 @@ namespace Visual
         {
             if (!CheckTextBoxForDouble(((TextBox)sender)))
                 e.Cancel = true;
+        }
+
+        //Validating of DataGridView Cells
+        private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            double number;
+
+            if (e.RowIndex != dataGridView1.RowCount - 1 && !double.TryParse(e.FormattedValue.ToString(), out number))
+            {
+                if (e.FormattedValue.ToString() == "")
+                    return;
+
+                e.Cancel = true;
+            }
+        }
+
+        private void checkBoxDerivative_CheckedChanged(object sender, EventArgs e)
+        {
+            DrawAll();
         }
     }
 }

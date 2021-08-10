@@ -36,6 +36,7 @@
             this.labelXMin = new System.Windows.Forms.Label();
             this.labelXMax = new System.Windows.Forms.Label();
             this.labelLagrange = new System.Windows.Forms.Label();
+            this.checkBoxDerivative = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -126,11 +127,24 @@
             this.labelLagrange.TabIndex = 7;
             this.labelLagrange.Text = "Lagrange-Table";
             // 
+            // checkBoxDerivative
+            // 
+            this.checkBoxDerivative.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBoxDerivative.AutoSize = true;
+            this.checkBoxDerivative.Location = new System.Drawing.Point(543, 350);
+            this.checkBoxDerivative.Name = "checkBoxDerivative";
+            this.checkBoxDerivative.Size = new System.Drawing.Size(104, 17);
+            this.checkBoxDerivative.TabIndex = 9;
+            this.checkBoxDerivative.Text = "Show Derivative";
+            this.checkBoxDerivative.UseVisualStyleBackColor = true;
+            this.checkBoxDerivative.CheckedChanged += new System.EventHandler(this.checkBoxDerivative_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.checkBoxDerivative);
             this.Controls.Add(this.labelLagrange);
             this.Controls.Add(this.labelXMax);
             this.Controls.Add(this.labelXMin);
@@ -157,6 +171,7 @@
         private System.Windows.Forms.Label labelXMin;
         private System.Windows.Forms.Label labelXMax;
         private System.Windows.Forms.Label labelLagrange;
+        private System.Windows.Forms.CheckBox checkBoxDerivative;
     }
 }
 
