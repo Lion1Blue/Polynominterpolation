@@ -37,8 +37,7 @@ namespace Visual
                 MajorGridlineThickness = 1,
                 MinorGridlineStyle = LineStyle.Solid,
                 MajorGridlineStyle = OxyPlot.LineStyle.Solid
-            }
-            );
+            });
 
             //Adding x - Coordinate Axes
             plotModel.Axes.Add(new OxyPlot.Axes.LinearAxis
@@ -50,8 +49,7 @@ namespace Visual
                 MajorGridlineThickness = 1,
                 MinorGridlineStyle = LineStyle.Solid,
                 MajorGridlineStyle = OxyPlot.LineStyle.Solid
-            }
-            );
+            });
 
             plotView1.MouseUp += PlotView_MouseUp;
 
@@ -138,7 +136,6 @@ namespace Visual
                     onMouseHold = true;
                     indexOfCurrentSelectedPoint = index;
                 }
-
             };
 
             myModel.MouseMove += (s, e) =>
@@ -160,7 +157,6 @@ namespace Visual
                     myModel.InvalidatePlot(true);
                 }
             };
-
 
             DrawControlPoints(myModel, controlPoints, points);
         }
