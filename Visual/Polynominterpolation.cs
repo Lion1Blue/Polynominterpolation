@@ -75,6 +75,7 @@ namespace Polynominterpolation
     class SumPart
     {
         double xi, xk;
+
         public SumPart(double xi, double xk)
         {
             this.xi = xi;
